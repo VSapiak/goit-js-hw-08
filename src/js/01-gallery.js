@@ -1,13 +1,12 @@
 // Add imports above this line
 import { galleryItems } from './gallery-items';
-// Change code below this line
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
-const galleryItem = document.querySelector('.gallery');
+const galleryItem = document.querySelector('.gallery')
 
-const imageItem = galleryItems
-  .map(
-    ({ preview, original, description }) =>
-      `<li class="gallery__item">
+const imageItem = galleryItems.map(({original, preview, description}) => 
+`<li class="gallery__item">
 <a class="gallery__link" href="${original}">
   <img
 	 class="gallery__image"
@@ -16,34 +15,12 @@ const imageItem = galleryItems
 	 alt="${description}"
   />
 </a>
-</li>`
-  )
-  .join('');
+</li>`).join('');
 
-galleryItem.insertAdjacentHTML('beforeend', imageItem);
-galleryItem.addEventListener('click', e => {
-  e.preventDefault();
-  const target = e.target;
-  if (target.nodeName !== 'IMG') {
-    return;
-  }
+galleryItem.insertAdjacentHTML("beforeend", imageItem);
 
-  const galleryImageSrc = e.target.dataset.source;
-  const galleryAltText = e.target.alt;
+const lightbox = new SimpleLightbox('.gallery a', { galleryAltText: 'alt',  animationSpeed: 250 });
 
-  const instance = basicLightbox.create(`
-    <img src="${galleryImageSrc}" alt="${galleryAltText}" width="800" height="600">,
-`);
-
-  instance.show();
-
-  const escapePress = e => {
-    if (e.key === 'Escape') {
-      instance.close();
-      document.removeEventListener('keydown', escapePress);
-    }
-  };
-  document.addEventListener('keydown', escapePress);
-});
+// Change code below this line
 
 console.log(galleryItems);
